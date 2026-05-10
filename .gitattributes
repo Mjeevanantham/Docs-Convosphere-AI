@@ -1,0 +1,4 @@
+# Keep MCP implementation/docs from this branch during merges to avoid recurring conflicts.
+mcp-server.js merge=ours
+mcp.README.md merge=ours
+package.json merge=ours

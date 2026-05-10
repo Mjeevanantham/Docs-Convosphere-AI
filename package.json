@@ -1,11 +1,12 @@
 {
   "name": "convosphere-docs-mcp",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "private": true,
   "type": "module",
   "scripts": {
     "mcp": "node mcp-server.js"
   },
+  "description": "Dependency-free MCP server for Convosphere documentation"
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.12.0"
   }

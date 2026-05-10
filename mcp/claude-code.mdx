@@ -1,0 +1,27 @@
+---
+title: "Add to Claude Code"
+description: "Connect Convosphere Docs MCP in Claude Code"
+---
+
+## Add server
+
+Add this to your Claude Code MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "convosphere-docs": {
+      "command": "node",
+      "args": ["/workspace/Docs-Convosphere-AI/mcp-server.js"]
+    }
+  }
+}
+```
+
+## Verify
+
+Ask Claude Code:
+
+```text
+List navigation groups from the convosphere-docs MCP server.
+```

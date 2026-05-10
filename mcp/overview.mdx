@@ -1,0 +1,40 @@
+---
+title: "MCP for Convosphere Docs"
+description: "Connect your AI IDE or agent to Convosphere docs with one config"
+---
+
+## Connect in 1 minute
+
+Use the Convosphere Docs MCP server to let your AI editor or agent search and retrieve documentation directly.
+
+<CardGroup cols={3}>
+  <Card title="Cursor" icon="arrow-pointer" href="/mcp/cursor">
+    Add MCP config for Cursor.
+  </Card>
+  <Card title="Antigravity" icon="sparkles" href="/mcp/antigravity">
+    Add MCP config for Antigravity-compatible clients.
+  </Card>
+  <Card title="Claude Code" icon="asterisk" href="/mcp/claude-code">
+    Add MCP config for Claude Code.
+  </Card>
+</CardGroup>
+
+## Server endpoint
+
+```json
+{
+  "mcpServers": {
+    "convosphere-docs": {
+      "command": "node",
+      "args": ["/workspace/Docs-Convosphere-AI/mcp-server.js"]
+    }
+  }
+}
+```
+
+## Available tools
+
+- `list_navigation`
+- `get_page`
+- `search_docs`
+- `find_endpoint`

@@ -1,0 +1,23 @@
+---
+title: "Add to Antigravity"
+description: "Connect Convosphere Docs MCP in Antigravity-compatible clients"
+---
+
+## Add server
+
+Use this config in your MCP settings UI:
+
+```json
+{
+  "mcpServers": {
+    "convosphere-docs": {
+      "command": "node",
+      "args": ["/workspace/Docs-Convosphere-AI/mcp-server.js"]
+    }
+  }
+}
+```
+
+## Recommended prompt
+
+"Use `search_docs` first, then `get_page` for the best matching slug before generating answers."

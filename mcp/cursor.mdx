@@ -1,0 +1,26 @@
+---
+title: "Add to Cursor"
+description: "Connect Convosphere Docs MCP in Cursor"
+---
+
+## Add server
+
+1. Open Cursor settings.
+2. Go to MCP servers.
+3. Click **Add Server**.
+4. Paste this config:
+
+```json
+{
+  "mcpServers": {
+    "convosphere-docs": {
+      "command": "node",
+      "args": ["/workspace/Docs-Convosphere-AI/mcp-server.js"]
+    }
+  }
+}
+```
+
+<Info>
+Use your local absolute path if your repo is not in `/workspace/Docs-Convosphere-AI`.
+</Info>
