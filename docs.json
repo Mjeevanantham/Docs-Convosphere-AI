@@ -27,6 +27,7 @@
               "guides/agents",
               "guides/knowledge-base",
               "guides/widget-embed",
+              "guides/mcp-cursor",
               "guides/authentication"
             ]
           },
@@ -107,6 +108,12 @@
               "api-reference/webhooks/list",
               "api-reference/webhooks/create",
               "api-reference/webhooks/events"
+            ]
+          },
+          {
+            "group": "MCP",
+            "pages": [
+              "api-reference/mcp/tools"
             ]
           }
         ]

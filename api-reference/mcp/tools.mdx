@@ -1,0 +1,202 @@
+---
+title: "MCP tools"
+description: "Tool categories exposed through the Convosphere MCP server and how to test them safely."
+icon: "toolbox"
+---
+
+The Convosphere MCP server exposes Convosphere product APIs as callable tools for AI clients such as Cursor. Tools run with the authenticated user's OAuth context and, when available, are tracked against the user's default MCP API key.
+
+## Tool access model
+
+MCP tools use two layers of authorization:
+
+1. **MCP authentication** verifies the Cursor OAuth access token.
+2. **Application authorization** checks user role, plan, ownership, and route-level permissions.
+
+This means a tool can be connected correctly but still return `403` when the current user is not allowed to perform the action. For example, `canCreateAgent` can return `limitReached` on a free plan after the user already has one agent.
+
+## Core tools
+
+These tools are always available and are the best first tests after connecting.
+
+| Tool | Purpose |
+| --- | --- |
+| `whoAmI` | Returns the authenticated user ID, role, plan, tenant, tracking status, and auth kind. |
+| `getSessionContext` | Lists available tool categories and server capabilities. |
+| `loadToolsForTask` | Finds relevant tools for a natural-language task. |
+
+Example:
+
+```text
+Use convosphereMcp whoAmI
+```
+
+## Health and diagnostics
+
+| Tool | Purpose |
+| --- | --- |
+| `healthCheck` | Checks application, database, and Redis health. |
+| `dbHealthCheck` | Checks database and Redis connectivity. |
+| `getUsageMetrics` | Returns usage totals and plan credits for the current user. |
+| `getUsageHistory` | Returns daily usage history. |
+
+## User and account tools
+
+| Tool | Purpose |
+| --- | --- |
+| `getUserProfile` | Reads the current user's profile by ID. |
+| `getUserPreferences` | Reads dashboard/application preferences. |
+| `getUserTheme` | Reads theme settings. |
+| `getSocketToken` | Generates a short-lived WebSocket token for the authenticated user. |
+
+Mutation tools such as `updateUserProfile`, `updateUserPreferences`, `updateUserTheme`, `changePassword`, and `deleteUserAccount` should only be tested with a test account.
+
+## Agents and analytics
+
+| Tool | Purpose |
+| --- | --- |
+| `canCreateAgent` | Checks whether the user's plan allows another agent. |
+| `getAgent` | Reads an agent owned by the user. |
+| `getAgentSettings` | Reads widget and agent settings. |
+| `getAgentAnalytics` | Reads analytics for an agent and time range. |
+
+Example:
+
+```text
+Use convosphereMcp getAgentAnalytics with id "<agent-id>" and range "30d"
+```
+
+## Conversations and messages
+
+| Tool | Purpose |
+| --- | --- |
+| `listDashboardConversations` | Lists dashboard-visible conversations for an agent. |
+| `listConversations` | Lists public/API conversations for an agent. |
+| `getDashboardConversation` | Reads messages for a dashboard conversation thread. |
+| `getConversation` | Reads messages for a public/API conversation thread. |
+| `listAgentMessages` | Lists agent messages where available. |
+| `getChatSuggestions` | Generates follow-up suggestions from conversation context. |
+
+Conversation detail tools require both `id` and `threadId`.
+
+## Knowledge, training, and Notion
+
+| Tool | Purpose |
+| --- | --- |
+| `listKnowledgeDocuments` | Lists documents connected to an agent knowledge base. |
+| `previewKnowledgeDocument` | Previews a specific knowledge document. |
+| `listTrainingDocuments` | Lists training documents for an agent. |
+| `listFineTuningJobs` | Lists fine-tuning jobs for an agent. |
+| `listNotionConnections` | Lists Notion connections for an agent. |
+| `listNotionPages` | Lists pages for a Notion connection. |
+| `listNotionDatabases` | Lists databases for a Notion connection. |
+
+Tools that upload files, add URLs, add Q&A, sync Notion, reindex data, or start fine-tuning can change data or start background jobs. Test them with disposable data.
+
+## Tickets and notifications
+
+| Tool | Purpose |
+| --- | --- |
+| `listTickets` | Lists tickets for the authenticated user. |
+| `getTicket` | Reads a specific ticket. |
+| `listComments` | Lists comments for a ticket. |
+| `listNotifications` | Lists notifications. |
+| `getUnreadCount` | Returns unread notification count. |
+
+Create, update, delete, mark-read, and bulk notification tools mutate data.
+
+## Integrations and providers
+
+| Tool | Purpose |
+| --- | --- |
+| `listProviders` | Lists available integration providers. |
+| `listIntegrations` | Lists integrations owned by the user. |
+| `getIntegration` | Reads a specific integration. |
+| `getOAuthAuthUrl` | Builds an OAuth authorization URL for an integration provider. |
+| `testIntegration` | Tests an existing integration connection. |
+
+Creating, updating, deleting, OAuth callbacks, and webhook handlers can create or modify integration records.
+
+## Public and pricing tools
+
+| Tool | Purpose |
+| --- | --- |
+| `getPublicWidgetSettings` | Reads public widget settings for an agent. |
+| `getPublicIntelligentBot` | Reads the public intelligent bot configuration. |
+| `listBotTemplates` | Lists bot templates. |
+| `listStudentTemplates` | Lists student templates. |
+| `getQuickStartOptions` | Reads quick-start progress. |
+| `getStudentPersonalization` | Reads onboarding personalization data. |
+| `listPlans` | Lists available subscription plans. |
+| `listPricingPlans` | Lists pricing plans. |
+| `calculatePricing` | Estimates pricing for agent/message requirements. |
+| `searchOrganizations` | Searches organization records. |
+
+## Admin-only tools
+
+Some tools are exposed through MCP but still require admin permissions in the application layer. A normal user should expect `401` or `403` for these tools.
+
+Examples include:
+
+- `getSchedule`
+- `listLeads`
+- Admin analytics, user, ticket, pricing, configuration, and super-admin tools
+
+Do not bypass these guards for normal MCP users.
+
+## Safe test checklist
+
+Use this checklist after a new MCP connection:
+
+<Steps>
+<Step title="Verify identity">
+
+```text
+Use convosphereMcp whoAmI
+```
+
+</Step>
+<Step title="Verify server health">
+
+```text
+Use convosphereMcp healthCheck
+```
+
+</Step>
+<Step title="Verify usage tracking">
+
+```text
+Use convosphereMcp getUsageMetrics
+```
+
+</Step>
+<Step title="Verify user-scoped proxying">
+
+```text
+Use convosphereMcp getUserPreferences
+```
+
+</Step>
+<Step title="Verify agent reads">
+
+```text
+Use convosphereMcp getAgent with id "<agent-id>"
+```
+
+</Step>
+</Steps>
+
+## Unsafe test categories
+
+Do not run these on a real account unless the intent is explicit:
+
+- Account deletion and password changes
+- Create, update, and delete tools
+- Payment and Razorpay webhook tools
+- Webhook receiver tools
+- File upload and URL ingestion tools
+- Fine-tuning start tools
+- Notion sync tools
+- Ticket creation tools that notify users or admins
+
+Use a test user, test agent, and disposable records for full end-to-end mutation testing.
