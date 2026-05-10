@@ -2,6 +2,8 @@
 
 Dependency-free MCP server for this docs repository.
 
+It resolves docs relative to the server file location, so it works even when launched from a different working directory.
+
 ## Why previous setup failed
 
 The previous version depended on `@modelcontextprotocol/sdk`; in restricted environments that package may fail to install.
@@ -17,7 +19,7 @@ This new version uses only Node.js built-ins and implements MCP JSON-RPC framing
 ## Run
 
 ```bash
-node mcp-server.js
+node /workspace/Docs-Convosphere-AI/mcp-server.js
 ```
 
 ## Client config
