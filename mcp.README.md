@@ -23,6 +23,11 @@ node /workspace/Docs-Convosphere-AI/mcp-server.js
 ```
 
 ## Client config
+npm install
+npm run mcp
+```
+
+## Example MCP client config
 
 ```json
 {
