@@ -1,0 +1,32 @@
+---
+title: "MCP Tools Reference"
+description: "Tool contract for the Convosphere Docs MCP server"
+---
+
+## Tools
+
+### `list_navigation`
+Returns tabs, groups, and slugs from docs navigation.
+
+### `get_page`
+Input:
+
+```json
+{ "slug": "guides/agents" }
+```
+
+Returns page metadata and content excerpt.
+
+### `search_docs`
+Input:
+
+```json
+{ "query": "webhook events" }
+```
+
+### `find_endpoint`
+Input:
+
+```json
+{ "task": "create agent" }
+```

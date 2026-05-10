@@ -110,6 +110,26 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "MCP",
+        "groups": [
+          {
+            "group": "MCP Quickstart",
+            "pages": [
+              "mcp/overview",
+              "mcp/cursor",
+              "mcp/antigravity",
+              "mcp/claude-code"
+            ]
+          },
+          {
+            "group": "MCP Tools",
+            "pages": [
+              "mcp/tools"
+            ]
+          }
+        ]
       }
     ],
     "global": {
